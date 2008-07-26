@@ -6,7 +6,7 @@ Requires at least: 2.5
 Tested up to: 2.6
 Stable tag: trunk
 
-Allows children Pages to have a stub that is only a number. Sacrifices the `<!--nextpage-->` ability in Pages to accomplish it.
+Allows children Pages to have a stub that is only a number. Sacrifices the paging ability in Pages to accomplish it.
 
 == Description ==
 
