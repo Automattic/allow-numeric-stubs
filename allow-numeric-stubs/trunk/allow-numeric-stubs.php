@@ -3,7 +3,7 @@
 **************************************************************************
 
 Plugin Name:  Allow Numeric Stubs
-Plugin URI:   http://wordpress.org/extend/plugins/allow-numeric-stubs/
+Plugin URI:   http://www.viper007bond.com/wordpress-plugins/allow-numeric-stubs/
 Description:  Allows children Pages to have a stub that is only a number. Sacrifices the <code>&lt;!--nextpage--&gt;</code> ability in Pages to accomplish it.
 Version:      1.0.0
 Author:       Viper007Bond
