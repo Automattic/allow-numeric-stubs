@@ -1,7 +1,7 @@
 === Allow Numeric Stubs ===
 Contributors: Viper007Bond
 Donate link: http://www.viper007bond.com/donate/
-Tags: archive, archives, posts
+Tags: page, pages, numeric, number
 Requires at least: 2.5
 Tested up to: 2.6
 Stable tag: trunk
