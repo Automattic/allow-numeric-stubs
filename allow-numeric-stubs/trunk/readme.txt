@@ -30,7 +30,7 @@ This should result in the following file structure:
     - plugins
         - allow-numeric-stubs
             | readme.txt
-            | allow-numeric-stubs`
+            | allow-numeric-stubs.php`
 
 Then just visit your admin area and activate the plugin. That's it!
 
