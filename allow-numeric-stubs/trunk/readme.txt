@@ -2,16 +2,17 @@
 Contributors: Viper007Bond
 Donate link: http://www.viper007bond.com/donate/
 Tags: page, pages, numeric, number
-Requires at least: 2.5
+Requires at least: 3.0
+Tested up to: 3.1
 Stable tag: trunk
 
-Allows children Pages to have a stub that is only a number. Sacrifices the paging ability in Pages to accomplish it.
+Allows Pages to have a stub that is only a number. Sacrifices the paged content ability in Pages to accomplish it.
 
 == Description ==
 
-Starting with WordPress 2.5, there is [a bug](http://trac.wordpress.org/ticket/5305) where you cannot have a child Page that's stub is a number. For example this will not work: `/about/5/`. That URL conflicts with paged content feature where you can posts and Pages with multiple pages of content by adding `<!--nextpage-->` within your content.
+It is not possible to have a page slug (the page's name in the URL) that is a numer. For example this will not work: `yoursite.com/about/2/`. That URL conflicts with paged content feature where you can posts and pages with multiple pages of content by adding `<!--nextpage-->` within your content.
 
-This plugin allows you to have children Pages with numbers as stubs by giving up the ability to have paged Pages which isn't a big deal as most people don't use paged Pages anyway.
+This plugin allows you to have  Pages with numbers as stubs by giving up the ability to have paged content pages which isn't a big deal as most people don't use paged content pages anyway.
 
 == Installation ==
 
@@ -21,21 +22,15 @@ To upgrade from a previous version of this plugin, delete the entire folder and 
 
 ###Installing The Plugin###
 
-Extract all files from the ZIP file, making sure to keep the file structure intact, and then upload it to `/wp-content/plugins/`.
-
-This should result in the following file structure:
-
-`- wp-content
-    - plugins
-        - allow-numeric-stubs
-            | readme.txt
-            | allow-numeric-stubs.php`
-
-Then just visit your admin area and activate the plugin. That's it!
+Go to your WordPress administration area and then navigate to Plugins -> Add New in the menu. Search for this plugin's name and then press the install link.
 
 **See Also:** ["Installing Plugins" article on the WP Codex](http://codex.wordpress.org/Managing_Plugins#Installing_Plugins)
 
 == ChangeLog ==
+
+**Version 2.0.0**
+
+* Recoded for WordPress 3.0+. WordPress now won't let you manually enter a numeric stub -- it will prefix "-2" onto the end of it so that the page is viewable. This new plugin version works around it.
 
 **Version 1.0.0**
 
