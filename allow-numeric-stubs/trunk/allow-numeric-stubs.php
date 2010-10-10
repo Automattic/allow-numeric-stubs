@@ -5,7 +5,7 @@
 Plugin Name:  Allow Numeric Stubs
 Plugin URI:   http://www.viper007bond.com/wordpress-plugins/allow-numeric-stubs/
 Description:  Allows Pages to have a stub that is only a number. Sacrifices the <code>&lt;!--nextpage--&gt;</code> ability in Pages to accomplish it.
-Version:      2.0.0
+Version:      2.0.1
 Author:       Viper007Bond
 Author URI:   http://www.viper007bond.com/
 
@@ -36,7 +36,7 @@ class Allow_Numeric_Stubs {
 		add_filter( 'page_rewrite_rules',   array( &$this, 'page_rewrite_rules' ) );
 
 		add_action( 'save_post',            array( &$this, 'maybe_fix_stub' ), 2, 2 );
-		add_filter( 'editable_slug',        array(&$this, 'maybe_fix_editable_slug') );
+		add_filter( 'editable_slug',        array( &$this, 'maybe_fix_editable_slug' ) );
 	}
 
 
@@ -76,6 +76,9 @@ class Allow_Numeric_Stubs {
 		add_filter( 'wp_insert_post_data', array(&$this, 'slug_fixer'), 10, 2 );
 		wp_update_post( $post );
 		remove_filter( 'wp_insert_post_data', array(&$this, 'slug_fixer'), 10, 2 );
+
+		// Put this filter back incase any other posts are updated on this pageload
+		add_action( 'save_post', array( &$this, 'maybe_fix_stub' ), 2, 2 );
 	}
 
 
