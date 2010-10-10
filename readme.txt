@@ -28,6 +28,10 @@ Go to your WordPress administration area and then navigate to Plugins -> Add New
 
 == ChangeLog ==
 
+**Version 2.0.1**
+
+* Re-add the `save_post` filter after fixing the slug incase multiple posts are updated in one pageload.
+
 **Version 2.0.0**
 
 * Recoded for WordPress 3.0+. WordPress now won't let you manually enter a numeric stub -- it will prefix "-2" onto the end of it so that the page is viewable. This new plugin version works around it.
