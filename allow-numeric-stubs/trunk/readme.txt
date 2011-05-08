@@ -3,14 +3,14 @@ Contributors: Viper007Bond
 Donate link: http://www.viper007bond.com/donate/
 Tags: page, pages, numeric, number
 Requires at least: 3.0
-Tested up to: 3.1
+Tested up to: 3.1.x
 Stable tag: trunk
 
 Allows Pages to have a stub that is only a number. Sacrifices the paged content ability in Pages to accomplish it.
 
 == Description ==
 
-It is not possible to have a page slug (the page's name in the URL) that is a numer. For example this will not work: `yoursite.com/about/2/`. That URL conflicts with paged content feature where you can posts and pages with multiple pages of content by adding `<!--nextpage-->` within your content.
+It is not possible to have a page slug (the page's name in the URL) that is a number. For example this will not work: `yoursite.com/about/2/`. That URL conflicts with paged content feature where you can posts and pages with multiple pages of content by adding `<!--nextpage-->` within your content.
 
 This plugin allows you to have  Pages with numbers as stubs by giving up the ability to have paged content pages which isn't a big deal as most people don't use paged content pages anyway.
 
