@@ -5,7 +5,7 @@
 Plugin Name:  Allow Numeric Stubs
 Plugin URI:   http://www.viper007bond.com/wordpress-plugins/allow-numeric-stubs/
 Description:  Allows Pages to have a stub that is only a number. Sacrifices the <code>&lt;!--nextpage--&gt;</code> ability in Pages to accomplish it.
-Version:      2.0.1
+Version:      2.1.0
 Author:       Viper007Bond
 Author URI:   http://www.viper007bond.com/
 
@@ -49,9 +49,9 @@ class Allow_Numeric_Stubs {
 
 	// Remove the rewrite rule that "breaks" it (paged content) and replace it with one that allows numeric stubs
 	function page_rewrite_rules( $rules ) {
-		unset( $rules['(.+?)(/[0-9]+)?/?$'] );
+		unset( $rules['(.?.+?)(/[0-9]+)?/?$'] );
 
-		$rules['(.+?)?/?$'] = 'index.php?pagename=$matches[1]';
+		$rules['(.?.+?)?/?$'] = 'index.php?pagename=$matches[1]';
 
 		return $rules;
 	}
