@@ -5,13 +5,13 @@
 Plugin Name:  Allow Numeric Stubs
 Plugin URI:   http://www.viper007bond.com/wordpress-plugins/allow-numeric-stubs/
 Description:  Allows Pages to have a stub that is only a number. Sacrifices the <code>&lt;!--nextpage--&gt;</code> ability in Pages to accomplish it.
-Version:      2.1.0
+Version:      2.2.0
 Author:       Viper007Bond
 Author URI:   http://www.viper007bond.com/
 
 **************************************************************************
 
-Copyright (C) 2008-2010 Viper007Bond
+Copyright (C) 2008-2016 Viper007Bond
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,13 +30,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class Allow_Numeric_Stubs {
 
-	function allow_numeric_stubs() {
-		register_activation_hook( __FILE__, array( &$this, 'flush_rewrite_rules' ) );
+	function __construct() {
+		register_activation_hook( __FILE__, array( $this, 'flush_rewrite_rules' ) );
 
-		add_filter( 'page_rewrite_rules',   array( &$this, 'page_rewrite_rules' ) );
+		add_filter( 'page_rewrite_rules',   array( $this, 'page_rewrite_rules' ) );
 
-		add_action( 'save_post',            array( &$this, 'maybe_fix_stub' ), 2, 2 );
-		add_filter( 'editable_slug',        array( &$this, 'maybe_fix_editable_slug' ) );
+		add_action( 'save_post',            array( $this, 'maybe_fix_stub' ), 2, 2 );
+		add_filter( 'editable_slug',        array( $this, 'maybe_fix_editable_slug' ) );
 	}
 
 
@@ -70,15 +70,15 @@ class Allow_Numeric_Stubs {
 			return;
 
 		// Infinite loops are bad
-		remove_action( 'save_post', array( &$this, 'maybe_fix_stub' ), 2, 2 );
+		remove_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2, 2 );
 
 		// Update the post with a filter active that'll fix the slug back to what it was supposed to be
-		add_filter( 'wp_insert_post_data', array(&$this, 'slug_fixer'), 10, 2 );
+		add_filter( 'wp_insert_post_data', array( $this, 'slug_fixer'), 10, 2 );
 		wp_update_post( $post );
-		remove_filter( 'wp_insert_post_data', array(&$this, 'slug_fixer'), 10, 2 );
+		remove_filter( 'wp_insert_post_data', array( $this, 'slug_fixer'), 10, 2 );
 
 		// Put this filter back incase any other posts are updated on this pageload
-		add_action( 'save_post', array( &$this, 'maybe_fix_stub' ), 2, 2 );
+		add_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2, 2 );
 	}
 
 
@@ -126,5 +126,3 @@ class Allow_Numeric_Stubs {
 }
 
 $Allow_Numeric_Stubs = new Allow_Numeric_Stubs();
-
-?>
