@@ -70,12 +70,12 @@ class Allow_Numeric_Stubs {
 			return;
 
 		// Infinite loops are bad
-		remove_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2, 2 );
+		remove_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2 );
 
 		// Update the post with a filter active that'll fix the slug back to what it was supposed to be
 		add_filter( 'wp_insert_post_data', array( $this, 'slug_fixer'), 10, 2 );
 		wp_update_post( $post );
-		remove_filter( 'wp_insert_post_data', array( $this, 'slug_fixer'), 10, 2 );
+		remove_filter( 'wp_insert_post_data', array( $this, 'slug_fixer'), 10 );
 
 		// Put this filter back incase any other posts are updated on this pageload
 		add_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2, 2 );
