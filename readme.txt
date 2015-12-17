@@ -3,7 +3,7 @@ Contributors: Viper007Bond
 Donate link: http://www.viper007bond.com/donate/
 Tags: page, pages, numeric, number
 Requires at least: 3.3
-Tested up to: 3.3
+Tested up to: 4.4
 Stable tag: trunk
 
 Allows Pages to have a stub that is only a number. Sacrifices the paged content ability in Pages to accomplish it.
@@ -16,21 +16,23 @@ This plugin allows you to have  Pages with numbers as stubs by giving up the abi
 
 == Installation ==
 
-###Updgrading From A Previous Version###
+== Installation ==
 
-To upgrade from a previous version of this plugin, delete the entire folder and files from the previous version of the plugin and then follow the installation instructions below.
-
-###Installing The Plugin###
-
-Go to your WordPress administration area and then navigate to Plugins -> Add New in the menu. Search for this plugin's name and then press the install link.
-
-= See Also:** ["Installing Plugins" article on the WP Codex](http://codex.wordpress.org/Managing_Plugins#Installing_Plugins)
+1. Go to your admin area and select Plugins → Add New from the menu.
+2. Search for "Allow Numeric Stubs".
+3. Click install.
+4. Click activate.
 
 == ChangeLog ==
 
+= Version 2.2.0 =
+
+* Update for WordPress 4.4's rewrite rules.
+* PHP 7 compatibility by renaming class constructor. Also drops unneeded references.
+
 = Version 2.1.0 =
 
-* Update for WordPress 3.3 and it's newer rewrite rules.
+* Update for WordPress 3.3's rewrite rules.
 
 = Version 2.0.1 =
 
@@ -46,5 +48,5 @@ Go to your WordPress administration area and then navigate to Plugins -> Add New
 
 == Upgrade Notice ==
 
-= 2.1.0 =
-WordPress 3.3 compatibility.
+= 2.2.0 =
+WordPress 4.4+ compatibility.
