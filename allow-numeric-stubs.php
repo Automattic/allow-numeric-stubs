@@ -50,7 +50,7 @@ class Allow_Numeric_Stubs {
 	// Remove the rewrite rule that "breaks" it (paged content) and replace it with one that allows numeric stubs
 	function page_rewrite_rules( $rules ) {
 		unset( $rules['(.?.+?)(/[0-9]+)?/?$'] );     // Before WordPress 4.4
-		unset( $rules['(.?.+?)(?:/([0-9]+))?/?$'] ); // After WordPress 4.4+, see https://core.trac.wordpress.org/changeset/34492
+		unset( $rules['(.?.+?)(?:/([0-9]+))?/?$'] ); // After WordPress 4.4, see https://core.trac.wordpress.org/changeset/34492
 
 		$rules['(.?.+?)?/?$'] = 'index.php?pagename=$matches[1]';
 
