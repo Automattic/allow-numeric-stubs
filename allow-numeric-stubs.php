@@ -33,10 +33,10 @@ class Allow_Numeric_Stubs {
 	function __construct() {
 		register_activation_hook( __FILE__, array( $this, 'flush_rewrite_rules' ) );
 
-		add_filter( 'page_rewrite_rules',   array( $this, 'page_rewrite_rules' ) );
+		add_filter( 'page_rewrite_rules', array( $this, 'page_rewrite_rules' ) );
 
-		add_action( 'save_post',            array( $this, 'maybe_fix_stub' ), 2, 2 );
-		add_filter( 'editable_slug',        array( $this, 'maybe_fix_editable_slug' ) );
+		add_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2, 2 );
+		add_filter( 'editable_slug', array( $this, 'maybe_fix_editable_slug' ) );
 	}
 
 
@@ -63,20 +63,22 @@ class Allow_Numeric_Stubs {
 	function maybe_fix_stub( $post_ID, $post ) {
 
 		// Pages only
-		if ( 'page' != $post->post_type )
+		if ( 'page' != $post->post_type ) {
 			return;
+		}
 
 		// Only mess with numeric stubs or stubs that are 12345-2
-		if ( ! is_numeric( $post->post_name ) && $post->post_name == $this->maybe_unsuffix_slug( $post->post_name ) )
+		if ( ! is_numeric( $post->post_name ) && $post->post_name == $this->maybe_unsuffix_slug( $post->post_name ) ) {
 			return;
+		}
 
 		// Infinite loops are bad
 		remove_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2 );
 
 		// Update the post with a filter active that'll fix the slug back to what it was supposed to be
-		add_filter( 'wp_insert_post_data', array( $this, 'slug_fixer'), 10, 2 );
+		add_filter( 'wp_insert_post_data', array( $this, 'slug_fixer' ), 10, 2 );
 		wp_update_post( $post );
-		remove_filter( 'wp_insert_post_data', array( $this, 'slug_fixer'), 10 );
+		remove_filter( 'wp_insert_post_data', array( $this, 'slug_fixer' ), 10 );
 
 		// Put this filter back incase any other posts are updated on this pageload
 		add_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2, 2 );
@@ -97,16 +99,19 @@ class Allow_Numeric_Stubs {
 	function maybe_fix_editable_slug( $slug ) {
 		global $post;
 
-		if ( empty( $post ) )
+		if ( empty( $post ) ) {
 			$thispost = get_post( $_POST['post_id'] );
-		else
+		} else {
 			$thispost = $post;
+		}
 
-		if ( empty( $thispost->post_type ) )
+		if ( empty( $thispost->post_type ) ) {
 			return $slug;
+		}
 
-		if ( 'page' == $thispost->post_type )
+		if ( 'page' == $thispost->post_type ) {
 			$slug = $this->maybe_unsuffix_slug( $slug );
+		}
 
 		return $slug;
 	}
@@ -115,11 +120,12 @@ class Allow_Numeric_Stubs {
 	// Checks to see if a string is numeric with "-2" on the end of it
 	// If so, it returns the original numeric string
 	function maybe_unsuffix_slug( $slug ) {
-		if ( '-2' == substr( $slug, -2 ) ) {
-			$nonsuffixslug = substr( $slug, 0, -2 );
+		if ( '-2' == substr( $slug, - 2 ) ) {
+			$nonsuffixslug = substr( $slug, 0, - 2 );
 
-			if ( is_numeric( $nonsuffixslug ) )
+			if ( is_numeric( $nonsuffixslug ) ) {
 				$slug = $nonsuffixslug;
+			}
 		}
 
 		return $slug;
