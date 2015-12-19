@@ -10,16 +10,16 @@ Allows Pages to have a slug (URL) that is only a number. Sacrifices the paged co
 
 == Description ==
 
-It is not possible to have a page slug (the page's name in the URL) that is a number. For example this will not work: `yoursite.com/about/2/`. That URL conflicts with paged content feature where you can posts and pages with multiple pages of content by adding `<!--nextpage-->` within your content.
+Normally it is not possible to have a page slug (the page's name in the URL) that is a number. For example this will not work: `yoursite.com/about/2/`. That URL conflicts with paged content feature where you can posts and pages with multiple pages of content by adding `<!--nextpage-->` within your content.
 
-This plugin allows you to have pages with numbers as stubs by giving up the ability to have paged content pages which isn't a big deal as most people don't use paged content pages anyway.
+This plugin allows you to have pages with numbers as slugs by giving up the ability to have paged content pages which isn't a big deal as most people don't use paged content pages anyway.
 
 Code contributions and bug reports are welcome via [this plugin's GitHub repository](https://github.com/Viper007Bond/allow-numeric-stubs).
 
 == Installation ==
 
 1. Go to your admin area and select Plugins → Add New from the menu.
-2. Search for "Allow Numeric Stubs".
+2. Search for "Allow Numeric Slugs".
 3. Click install.
 4. Click activate.
 
@@ -44,7 +44,7 @@ Code contributions and bug reports are welcome via [this plugin's GitHub reposit
 
 = Version 2.0.0 =
 
-* Recoded for WordPress 3.0+. WordPress now won't let you manually enter a numeric stub -- it will prefix "-2" onto the end of it so that the page is viewable. This new plugin version works around it.
+* Recoded for WordPress 3.0+. WordPress now won't let you manually enter a numeric slug -- it will prefix "-2" onto the end of it so that the page is viewable. This new plugin version works around it.
 
 = Version 1.0.0 =
 
