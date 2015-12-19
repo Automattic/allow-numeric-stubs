@@ -2,9 +2,9 @@
 
 **************************************************************************
 
-Plugin Name:  Allow Numeric Stubs
-Plugin URI:   http://www.viper007bond.com/wordpress-plugins/allow-numeric-stubs/
-Description:  Allows Pages to have a stub that is only a number. Sacrifices the <code>&lt;!--nextpage--&gt;</code> ability in Pages to accomplish it.
+Plugin Name:  Allow Numeric Slugs
+Plugin URI:   http://www.viper007bond.com/wordpress-plugins/allow-numeric-slugs/
+Description:  Allows pages to have a slug (URL) that is only a number. Sacrifices the <code>&lt;!--nextpage--&gt;</code> ability in pages to accomplish it.
 Version:      3.0.0
 Author:       Viper007Bond
 Author URI:   http://www.viper007bond.com/
@@ -53,7 +53,7 @@ class Allow_Numeric_Stubs {
 	}
 
 	/**
-	 * Remove the rewrite rule that prevents numeric stubs from working (paged content)
+	 * Remove the rewrite rule that prevents numeric slugs from working (paged content)
 	 * and replace it with a new rule that allows them to.
 	 *
 	 * @param array $rules The existing rewrite rules for pages.
