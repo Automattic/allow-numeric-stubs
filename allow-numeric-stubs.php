@@ -5,7 +5,7 @@
 Plugin Name:  Allow Numeric Stubs
 Plugin URI:   http://www.viper007bond.com/wordpress-plugins/allow-numeric-stubs/
 Description:  Allows Pages to have a stub that is only a number. Sacrifices the <code>&lt;!--nextpage--&gt;</code> ability in Pages to accomplish it.
-Version:      2.2.0
+Version:      3.0.0
 Author:       Viper007Bond
 Author URI:   http://www.viper007bond.com/
 
@@ -35,8 +35,7 @@ class Allow_Numeric_Stubs {
 
 		add_filter( 'page_rewrite_rules', array( $this, 'page_rewrite_rules' ) );
 
-		add_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2, 2 );
-		add_filter( 'editable_slug', array( $this, 'maybe_fix_editable_slug' ) );
+		add_filter( 'wp_unique_post_slug', array( $this, 'filter__wp_unique_post_slug' ), 10, 6 );
 	}
 
 	/**
@@ -65,97 +64,38 @@ class Allow_Numeric_Stubs {
 	}
 
 	/**
-	 * WordPress considers purely numeric stubs to already be in use, so wp_unique_post_slug() adds a "-2" suffix to them normally.
-	 * We need to forcibly undo that and revert the slug to being numeric, if the author tried to make it so.
+	 * Undoes the work of wp_unique_post_slug() for pages with a numeric slug,
+	 * but only if they don't conflict with any existing sibling pages.
 	 *
-	 * @param int    $post_ID The ID of the post being saved (modified). Not used.
-	 * @param object $post    The post object for the post being saved (modified).
+	 * @param string $slug          The slug that wp_unique_post_slug() suggests using.
+	 * @param int    $post_ID       The post (page) ID that the slug belongs to.
+	 * @param string $post_status   The status of post (page) that the slug belongs to.
+	 * @param string $post_type     The post_type of the post that we're currently filtering. Aborts for everything but "page".
+	 * @param int    $post_parent   Post parent ID.
+	 * @param string $original_slug The originally requested slug, which may or may not be unique.
 	 */
-	function maybe_fix_stub( $post_ID, $post ) {
+	public function filter__wp_unique_post_slug( $slug, $post_ID, $post_status, $post_type, $post_parent, $original_slug ) {
+		global $wpdb;
 
-		// Pages only
-		if ( 'page' != $post->post_type ) {
-			return;
-		}
-
-		// Only mess with numeric stubs or stubs that are 12345-2
-		if ( ! is_numeric( $post->post_name ) && $post->post_name == $this->maybe_unsuffix_slug( $post->post_name ) ) {
-			return;
-		}
-
-		// Infinite loops are bad
-		remove_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2 );
-
-		// Update the post with a filter active that'll fix the slug back to what it was supposed to be
-		add_filter( 'wp_insert_post_data', array( $this, 'slug_fixer' ), 10, 2 );
-		wp_update_post( $post );
-		remove_filter( 'wp_insert_post_data', array( $this, 'slug_fixer' ), 10 );
-
-		// Put this filter back incase any other posts are updated on this pageload
-		add_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2, 2 );
-	}
-
-	/**
-	 * Filter callback that strips "-2" suffixes off of slugs.
-	 * wp_unique_post_slug() will try and add a "-2" to the end of it.
-	 *
-	 * @param array $data    An array of slashed post data.
-	 * @param array $postarr An array of sanitized, but otherwise unmodified post data.
-	 *
-	 * @return mixed An array of slashed post data, with the slug potentially modified.
-	 */
-	function slug_fixer( $data, $postarr ) {
-		$data['post_name'] = $this->maybe_unsuffix_slug( $postarr['post_name'] );
-
-		return $data;
-	}
-
-	/**
-	 * Fixes the slug in the editable box in the admin area.
-	 *
-	 * @param string $slug The current slug.
-	 *
-	 * @return string The potentially modified slug.
-	 */
-	function maybe_fix_editable_slug( $slug ) {
-		global $post;
-
-		if ( empty( $post ) ) {
-			$thispost = get_post( $_POST['post_id'] );
-		} else {
-			$thispost = $post;
-		}
-
-		if ( empty( $thispost->post_type ) ) {
+		// We're only interested in pages with attempted numeric slugs that got changed
+		if ( 'page' != $post_type || ! is_numeric( $original_slug ) || $slug === $original_slug ) {
 			return $slug;
 		}
 
-		if ( 'page' == $thispost->post_type ) {
-			$slug = $this->maybe_unsuffix_slug( $slug );
+		// Was there actually a conflict or was a suffix just added due to the preg_match() call in wp_unique_post_slug() ?
+		$post_name_check = $wpdb->get_var( $wpdb->prepare(
+			"SELECT post_name FROM $wpdb->posts WHERE post_name = %s AND post_type IN ( %s, 'attachment' ) AND ID != %d AND post_parent = %d LIMIT 1",
+			$original_slug, $post_type, $post_ID, $post_parent
+		) );
+
+		// There really is a conflict due to an existing page so keep the modified slug
+		if ( $post_name_check ) {
+			return $slug;
 		}
 
-		return $slug;
-	}
-
-	/**
-	 * Removes "-2" from otherwise numeric slugs.
-	 * Other slugs are untouched.
-	 *
-	 * @param string $slug A slug to maybe modify.
-	 *
-	 * @return string The potentially modified slug.
-	 */
-	function maybe_unsuffix_slug( $slug ) {
-		if ( '-2' == substr( $slug, - 2 ) ) {
-			$nonsuffixslug = substr( $slug, 0, - 2 );
-
-			if ( is_numeric( $nonsuffixslug ) ) {
-				$slug = $nonsuffixslug;
-			}
-		}
-
-		return $slug;
+		// Otherwise give us the slug we wanted
+		return $original_slug;
 	}
 }
 
-$Allow_Numeric_Stubs = new Allow_Numeric_Stubs();
+$GLOBALS['Allow_Numeric_Stubs'] = new Allow_Numeric_Stubs();
