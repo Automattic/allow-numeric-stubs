@@ -30,12 +30,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class Allow_Numeric_Stubs {
 
+	/**
+	 * Allow_Numeric_Stubs constructor. Registers the plugin's hooks.
+	 */
 	function __construct() {
+		// Flush rewrite rules on plugin activation
 		register_activation_hook( __FILE__, array( $this, 'flush_rewrite_rules' ) );
 
+		// Modify the rewrite rules for pages to swap in numeric slug support instead of paging
 		add_filter( 'page_rewrite_rules', array( $this, 'page_rewrite_rules' ) );
 
-		add_filter( 'wp_unique_post_slug', array( $this, 'filter__wp_unique_post_slug' ), 10, 6 );
+		// Filter the result of wp_unique_post_slug() to allow numeric slugs for pages
+		add_filter( 'wp_unique_post_slug', array( $this, 'wp_unique_post_slug_allow_numeric_page_slugs' ), 10, 6 );
 	}
 
 	/**
@@ -67,6 +73,8 @@ class Allow_Numeric_Stubs {
 	 * Undoes the work of wp_unique_post_slug() for pages with a numeric slug,
 	 * but only if they don't conflict with any existing sibling pages.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @param string $slug          The slug that wp_unique_post_slug() suggests using.
 	 * @param int    $post_ID       The post (page) ID that the slug belongs to.
 	 * @param string $post_status   The status of post (page) that the slug belongs to.
@@ -74,7 +82,7 @@ class Allow_Numeric_Stubs {
 	 * @param int    $post_parent   Post parent ID.
 	 * @param string $original_slug The originally requested slug, which may or may not be unique.
 	 */
-	public function filter__wp_unique_post_slug( $slug, $post_ID, $post_status, $post_type, $post_parent, $original_slug ) {
+	public function wp_unique_post_slug_allow_numeric_page_slugs( $slug, $post_ID, $post_status, $post_type, $post_parent, $original_slug ) {
 		global $wpdb;
 
 		// We're only interested in pages with attempted numeric slugs that got changed
