@@ -95,14 +95,14 @@ class Allow_Numeric_Stubs {
 		add_action( 'save_post', array( $this, 'maybe_fix_stub' ), 2, 2 );
 	}
 
-	// Ensure that post_name stays as we pass it as wp_unique_post_slug() will try and add a "-2" to the end of it
 	/**
 	 * Filter callback that strips "-2" suffixes off of slugs.
+	 * wp_unique_post_slug() will try and add a "-2" to the end of it.
 	 *
 	 * @param array $data    An array of slashed post data.
 	 * @param array $postarr An array of sanitized, but otherwise unmodified post data.
 	 *
-	 * @return mixed
+	 * @return mixed An array of slashed post data, with the slug potentially modified.
 	 */
 	function slug_fixer( $data, $postarr ) {
 		$data['post_name'] = $this->maybe_unsuffix_slug( $postarr['post_name'] );
@@ -110,8 +110,13 @@ class Allow_Numeric_Stubs {
 		return $data;
 	}
 
-
-	// Re-fix the page slug for the editable URL
+	/**
+	 * Fixes the slug in the editable box in the admin area.
+	 *
+	 * @param string $slug The current slug.
+	 *
+	 * @return string The potentially modified slug.
+	 */
 	function maybe_fix_editable_slug( $slug ) {
 		global $post;
 
@@ -132,9 +137,14 @@ class Allow_Numeric_Stubs {
 		return $slug;
 	}
 
-
-	// Checks to see if a string is numeric with "-2" on the end of it
-	// If so, it returns the original numeric string
+	/**
+	 * Removes "-2" from otherwise numeric slugs.
+	 * Other slugs are untouched.
+	 *
+	 * @param string $slug A slug to maybe modify.
+	 *
+	 * @return string The potentially modified slug.
+	 */
 	function maybe_unsuffix_slug( $slug ) {
 		if ( '-2' == substr( $slug, - 2 ) ) {
 			$nonsuffixslug = substr( $slug, 0, - 2 );
